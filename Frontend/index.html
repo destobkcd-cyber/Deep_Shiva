@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Agriculture Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="app-body">
+  <div class="grain-overlay"></div>
+  <div class="bg-orbit-saffron"></div>
+  <div class="bg-orbit-green"></div>
+
+  <header class="header">
+    <div class="header-main">
+      <div class="header-logo">
+        <span class="logo-mark">
+          <span class="logo-leaf"></span>
+        </span>
+        <div>
+          <div class="logo-title">Smart Agriculture</div>
+          <div class="logo-subtitle" id="user-greeting">Your fields at a glance</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="chip chip-soft">Today</span>
+        <button id="logout-btn" class="chip chip-outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <!-- Weather -->
+    <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-weather leaf-pop">
+          <span>☀️</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">Weather</h2>
+          <p class="card-subtitle tiny">Next 24 hours</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle weather card">⌃</button>
+      </header>
+
+      <div class="card-body">
+        <div class="stat-main">
+          <div>
+            <div class="stat-value-lg" id="weather-temp">28°C</div>
+            <p class="stat-label" id="weather-label">Partly cloudy · Light breeze</p>
+          </div>
+          <div class="weather-icon-mini">
+            <div class="sun"></div>
+            <div class="cloud"></div>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <span class="pill" id="weather-rain">Rain 40%</span>
+          <span class="pill" id="weather-wind">Wind 12 km/h</span>
+          <span class="pill" id="weather-humidity">Humidity 65%</span>
+        </div>
+
+        <p class="card-footnote">
+          Best time for spraying: early morning or late evening.
+        </p>
+      </div>
+    </section>
+
+    <!-- Yield -->
+    <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-yield leaf-pop">
+          <span>🌾</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">Yield</h2>
+          <p class="card-subtitle tiny">This season</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle yield card">⌃</button>
+      </header>
+
+      <div class="card-body">
+        <div class="stat-main">
+          <div>
+            <div class="stat-value-lg">82%</div>
+            <p class="stat-label">of optimal yield</p>
+          </div>
+          <p class="stat-change">+15% vs last season</p>
+        </div>
+
+        <div class="progress-shell">
+          <div class="progress-fill progress-grow"></div>
+        </div>
+
+        <p class="card-footnote">
+          Maintain soil moisture and monitor pests to keep this level.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mandi -->
+    <!-- <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-market leaf-pop">
+          <span>💱</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">Mandi</h2>
+          <p class="card-subtitle tiny">Nearby rates</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle mandi card">⌃</button>
+      </header>
+
+      <div class="card-body scrollable">
+        <div class="rates-list compact" id="mandi-list"></div>
+      </div>
+    </section> -->
+
+    <!-- To‑do -->
+    <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-todo leaf-pop">
+          <span>✅</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">To‑do</h2>
+          <p class="card-subtitle tiny">Fields & operations</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle to-do card">⌃</button>
+      </header>
+
+      <div class="card-body scrollable">
+        <form class="todo-add" id="todo-form">
+          <input
+            type="text"
+            id="todo-input"
+            placeholder="Add task (e.g. Spray pesticide in Field B)"
+            autocomplete="off"
+          />
+          <button type="submit" class="btn-pulse" aria-label="Add task">＋</button>
+        </form>
+
+        <ul class="todo-list" id="todo-list"></ul>
+      </div>
+    </section>
+
+    <!-- Events -->
+    <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-events leaf-pop">
+          <span>📅</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">Events</h2>
+          <p class="card-subtitle tiny">Near your village</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle events card">⌃</button>
+      </header>
+
+      <div class="card-body scrollable">
+        <div class="list-compact" id="events-list"></div>
+      </div>
+    </section>
+
+    <!-- Schemes -->
+    <section class="card expandable" data-card>
+      <header class="card-header compact">
+        <div class="icon-pill icon-schemes leaf-pop">
+          <span>🏛️</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">Schemes</h2>
+          <p class="card-subtitle tiny">Govt support</p>
+        </div>
+        <button class="card-toggle" type="button" aria-label="Toggle schemes card">⌃</button>
+      </header>
+
+      <div class="card-body scrollable">
+        <div class="list-compact">
+          <article class="list-card">
+            <div class="list-main">
+              <p class="list-title small">PM‑KISAN</p>
+              <p class="list-meta tiny">₹6,000/year · Direct benefit</p>
+            </div>
+          </article>
+          <article class="list-card">
+            <div class="list-main">
+              <p class="list-title small">Soil Health Card</p>
+              <p class="list-meta tiny">Free soil testing & advice</p>
+            </div>
+          </article>
+          <article class="list-card">
+            <div class="list-main">
+              <p class="list-title small">Fasal Bima</p>
+              <p class="list-meta tiny">Subsidised crop insurance</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="card expandable" id="llm-response-card" style="grid-column: 1 / -1; max-height: 500px;">
+      <header class="card-header compact">
+        <div class="icon-pill" style="background: linear-gradient(135deg, var(--accent-mint), var(--accent-green));">
+          <span>🧠</span>
+        </div>
+        <div class="card-title-wrap">
+          <h2 class="card-title small">AI Assistant Response</h2>
+          <p class="card-subtitle tiny">Llama 3.1 8B (via local llama.cpp server)</p>
+        </div>
+      </header>
+
+      <div class="card-body">
+        <div id="llm-output-area" style="min-height: 100px; font-size: 0.9rem; white-space: pre-wrap; color: var(--text-main);">
+          Your LLM responses will appear here after you ask a question in the chat bar below.
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  </main>
+
+  <!-- Chatbar -->
+  <div class="chatbar-shell">
+    <form class="chatbar" id="chat-form">
+      <div class="chatbar-inner">
+        <span class="chatbar-icon leaf-pop">🌱</span>
+        <input
+          id="chat-input"
+          type="text"
+          autocomplete="off"
+          placeholder="Ask about crops, soil, weather or mandi rates..."
+          aria-label="Ask the agriculture assistant"
+        />
+        <button type="submit" class="chatbar-send btn-pulse" aria-label="Send question">
+          ➤
+        </button>
+      </div>
+      <p class="chatbar-hint">
+        Try: “Plan irrigation for my wheat in Satara this week”
+      </p>
+    </form>
+  </div>
+
+  <script>
+    const API_BASE = `http://${window.location.hostname}:4000`;
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('userName') || 'Farmer';
+
+    const greetingEl = document.getElementById('user-greeting');
+    if (greetingEl) {
+      greetingEl.textContent = `Namaste, ${userName}! Your fields at a glance`;
+    }
+
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        window.location.href = 'login.html';
+      });
+    }
+
+    // Expand/collapse cards
+    document.querySelectorAll('[data-card]').forEach((card) => {
+      const toggle = card.querySelector('.card-toggle');
+      if (!toggle) return;
+      toggle.addEventListener('click', () => {
+        card.classList.toggle('collapsed');
+        toggle.classList.add('pressed');
+        setTimeout(() => toggle.classList.remove('pressed'), 150);
+      });
+    });
+
+    // ===== WEATHER =====
+    async function getLocationCoordinates() {
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          reject(new Error('Geolocation not supported'));
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            console.log('Geolocation coordinates:', { lat, lon });
+            resolve({ lat, lon });
+          },
+          (error) => {
+            console.warn('Geolocation error:', error.message);
+            console.log('Using fallback coordinates:', { lat: 18.52, lon: 73.86 });
+            // Fallback to default coordinates (Pune)
+            resolve({ lat: 18.52, lon: 73.86 });
+          }
+        );
+      });
+    }
+
+    async function loadWeather() {
+      try {
+        const coords = await getLocationCoordinates();
+        const res = await fetch(`${API_BASE}/api/weather?lat=${coords.lat}&lon=${coords.lon}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        console.log('Weather API response:', data);
+        const t = Math.round(data.temp);
+        const fl = Math.round(data.feelsLike);
+
+        const tempEl = document.getElementById('weather-temp');
+        const labelEl = document.getElementById('weather-label');
+        const rainEl = document.getElementById('weather-rain');
+        const windEl = document.getElementById('weather-wind');
+        const humEl = document.getElementById('weather-humidity');
+
+        if (tempEl) tempEl.textContent = `${t}°C`;
+        if (labelEl)
+          labelEl.textContent = `${data.description} · Feels like ${fl}°C`;
+        if (rainEl) rainEl.textContent = `Rain ${data.rainChance}%`;
+        if (windEl && data.wind != null) {
+          // OpenWeather returns wind speed in m/s — convert to km/h for display
+          const windKmh = Math.round(data.wind * 3.6);
+          windEl.textContent = `Wind ${windKmh} km/h`;
+        }
+        if (humEl) humEl.textContent = `Humidity ${data.humidity}%`;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // ===== MANDI =====
+    async function loadMandi() {
+      const list = document.getElementById('mandi-list');
+      if (!list) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/mandi`);
+        if (!res.ok) return;
+        const rates = await res.json();
+        list.innerHTML = '';
+        rates.forEach((r) => {
+          const row = document.createElement('article');
+          row.className = 'rate-row';
+          const cls =
+            r.changePct > 0 ? 'chip chip-positive tiny' : 'chip chip-negative tiny';
+          row.innerHTML = `
+            <div class="rate-main">
+              <span class="rate-name">${r.commodity}</span>
+              <span class="rate-unit">₹${r.modalPrice}</span>
+            </div>
+            <span class="${cls}">${r.changePct > 0 ? '+' : ''}${r.changePct}%</span>
+          `;
+          list.appendChild(row);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // ===== EVENTS =====
+    async function loadEvents() {
+      const list = document.getElementById('events-list');
+      if (!list) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/events`);
+        if (!res.ok) return;
+        const events = await res.json();
+        list.innerHTML = '';
+        events.forEach((ev) => {
+          const card = document.createElement('article');
+          card.className = 'list-card';
+          card.innerHTML = `
+            <div class="list-main">
+              <p class="list-title small">${ev.name || ev.title}</p>
+              <p class="list-meta tiny">${ev.dates || ev.meta}</p>
+              <p class="list-meta tiny">${ev.location ? ev.location : ''}</p>
+              ${ev.type ? `<p class="list-meta tiny">${ev.type}</p>` : ''}
+              ${ev.description ? `<p class="list-desc tiny">${ev.description}</p>` : ''}
+            </div>
+          `;
+          list.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Events load error:', err);
+      }
+    }
+
+    // ===== TODOS =====
+    const todoForm = document.getElementById('todo-form');
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
+
+    async function loadTodos() {
+      if (!todoList) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/todos`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const todos = await res.json();
+        todoList.innerHTML = '';
+        todos.forEach((t) => {
+          const li = document.createElement('li');
+          li.className = 'todo-item' + (t.done ? ' done' : '');
+          li.dataset.id = t._id;
+          li.innerHTML = `
+            <button class="todo-check" type="button" aria-label="Toggle complete"></button>
+            <div class="todo-main">
+              <p class="todo-title">${t.title}</p>
+              <p class="todo-meta">${t.note || 'From backend'}</p>
+            </div>
+            <span class="badge soft">${t.tag || 'Task'}</span>
+          `;
+          todoList.appendChild(li);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (todoForm && todoInput && todoList) {
+      todoForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = todoInput.value.trim();
+        if (!title) return;
+        try {
+          const res = await fetch(`${API_BASE}/api/todos`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ title }),
+          });
+          if (!res.ok) {
+            alert('Could not add todo');
+            return;
+          }
+          const todo = await res.json();
+          todoInput.value = '';
+          const li = document.createElement('li');
+          li.className = 'todo-item';
+          li.dataset.id = todo._id;
+          li.innerHTML = `
+            <button class="todo-check" type="button" aria-label="Toggle complete"></button>
+            <div class="todo-main">
+              <p class="todo-title">${todo.title}</p>
+              <p class="todo-meta">Just added</p>
+            </div>
+            <span class="badge soft">New</span>
+          `;
+          todoList.prepend(li);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+
+      todoList.addEventListener('click', async (e) => {
+        if (!e.target.classList.contains('todo-check')) return;
+        const item = e.target.closest('.todo-item');
+        const id = item.dataset.id;
+        const done = !item.classList.contains('done');
+        try {
+          const res = await fetch(`${API_BASE}/api/todos/${id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ done }),
+          });
+          if (!res.ok) return;
+          item.classList.toggle('done');
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }
+
+    // ===== CHAT =====
+    // ===== CHAT (Direct llama.cpp Integration) =====
+// IMPORTANT: Target the LLM server directly on port 8080
+const CHAT_LLM_URL = `http://${window.location.hostname}:8080/completion`; 
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+const chatSendButton = document.querySelector('.chatbar-send');
+const llmOutputArea = document.getElementById('llm-output-area'); // New element from Step 1
+
+if (chatForm && chatInput && llmOutputArea) {
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = chatInput.value.trim();
+    if (!value) return;
+
+    // 1. Show processing state
+    const originalInput = chatInput.value;
+    chatInput.value = ''; // Clear input
+    chatSendButton.disabled = true;
+    llmOutputArea.textContent = `Thinking... Processing your query: "${value}"`;
+
+    try {
+      // 2. Prepare the payload for llama.cpp's /completion endpoint
+     // ... inside the chatForm.addEventListener ...
+
+      // 2. Prepare the payload for llama.cpp's /completion endpoint
+      
+      const systemInstruction = "You are a smart agriculture assistant named 'Kisan AI'. Your knowledge date is December 2023. Respond to the farmer's queries with helpful, detailed, and up-to-date advice (as of July 26, 2024).";
+      
+      // Get the current date for the prompt
+      const todayDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+      
+      const payload = {
+        // **CRITICAL CHANGE:** Use the exact prompt format you provided
+        prompt: `<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: ${todayDate}\n\n${systemInstruction}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n${value}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n`,
+        
+        n_predict: 2048, // Keeping this high for detailed output
+        temperature: 0.7,
+        
+        // Using the recommended Llama 3 stop tokens, which align with your format
+        stop: ["<|eot_id|>", "<|end_of_text|>", "<|start_header_id|>"], 
+        stream: false,
+      };
+      
+      // ... rest of the fetch request
+
+      const res = await fetch(CHAT_LLM_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // **Authorization header is intentionally OMITTED**
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error(`LLM API failed. Status: ${res.status}`);
+      }
+
+      // 3. Process the response
+      const data = await res.json();
+      // The generated text is in the 'content' field for llama.cpp's completion API
+      const assistantResponse = data.content.trim();
+
+      llmOutputArea.textContent = assistantResponse;
+
+    } catch (err) {
+      console.error('LLM Integration Error:', err);
+      llmOutputArea.innerHTML = `
+        <strong style="color: #ef5350;">Error: Could not connect to the LLM server.</strong>
+        <p style="margin-top: 10px;">Please confirm llama.cpp's server.exe is running on port 8080. Details: ${err.message}</p>`;
+      chatInput.value = originalInput; // Restore input on error
+    } finally {
+      chatSendButton.disabled = false;
+    }
+  });
+}
+      
+
+    // initial load
+    loadWeather();
+    loadMandi();
+    loadEvents();
+    loadTodos();
+  </script>
+</body>
+</html>
